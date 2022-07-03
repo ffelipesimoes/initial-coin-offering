@@ -4,6 +4,11 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
+import * as dotenv from "dotenv";
+// eslint-disable-next-line node/no-missing-import
+import { CRYPTO_DEVS_NFT_CONTRACT_ADDRESS } from "../constants";
+
+dotenv.config();
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -13,13 +18,27 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  // Address of the Crypto Devs NFT contract that you deployed in the previous module
+  const cryptoDevsNFTContract = CRYPTO_DEVS_NFT_CONTRACT_ADDRESS;
 
-  await greeter.deployed();
+  /*
+    A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
+    so cryptoDevsTokenContract here is a factory for instances of our CryptoDevToken contract.
+    */
+  const cryptoDevsTokenContract = await ethers.getContractFactory(
+    "CryptoDevToken"
+  );
 
-  console.log("Greeter deployed to:", greeter.address);
+  // deploy the contract
+  const deployedCryptoDevsTokenContract = await cryptoDevsTokenContract.deploy(
+    cryptoDevsNFTContract
+  );
+
+  // print the address of the deployed contract
+  console.log(
+    "Crypto Devs Token Contract Address:",
+    deployedCryptoDevsTokenContract.address
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
