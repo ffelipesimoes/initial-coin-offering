@@ -13,7 +13,7 @@ dotenv.config();
 // Go to https://hardhat.org/config/ to learn more
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.4",
+  solidity: "0.8.10",
   networks: {
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
